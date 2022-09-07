@@ -1,0 +1,63 @@
+﻿  CG_test1.c
+C:\Users\user\source\repos\test_01\CG_test1.c(11,8): warning C4244: '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(15,7): error C2109: 첨자는 배열 또는 포인터 형식을 사용해야 합니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(16,7): error C2109: 첨자는 배열 또는 포인터 형식을 사용해야 합니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(26,20): error C2109: 첨자는 배열 또는 포인터 형식을 사용해야 합니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(26,11): warning C4473: 'printf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(26,11): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 1개 필요하지만 0개가 제공되었습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(26,11): message : 누락된 variadic 인수 1이(가) 서식 문자열 '%d'에 필요합니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(30,20): error C2109: 첨자는 배열 또는 포인터 형식을 사용해야 합니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(30,11): warning C4473: 'printf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(30,11): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 1개 필요하지만 0개가 제공되었습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(30,11): message : 누락된 variadic 인수 1이(가) 서식 문자열 '%d'에 필요합니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(40,1): warning C4566: 유니버설 문자 이름 '\uF0E8'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(51,20): error C2109: 첨자는 배열 또는 포인터 형식을 사용해야 합니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(52,3): error C2143: 구문 오류: ';'이(가) '}' 앞에 없습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(85,14): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(85,13): warning C4024: 'rand_input': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(85,17): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(85,16): warning C4024: 'rand_input': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(87,16): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(87,15): warning C4024: 'print_matrix': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(87,19): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(87,18): warning C4024: 'print_matrix': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(90,10): warning C4473: 'scanf_s': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(90,10): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 2개 필요하지만 1개가 제공되었습니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(90,10): message : 누락된 variadic 인수 2이(가) 서식 문자열 '%c'에 필요합니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(90,10): message : 이 인수는 버퍼 크기로 사용됩니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(92,23): warning C4047: '!=': 'char [2]'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(93,21): warning C4047: '==': 'char [2]'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(93,37): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(93,36): warning C4024: 'matrix_add': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(93,40): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(93,39): warning C4024: 'matrix_add': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(94,26): warning C4047: '==': 'char [2]'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(94,42): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(94,41): warning C4024: 'matrix_sub': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(94,45): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(94,44): warning C4024: 'matrix_sub': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(95,26): warning C4047: '==': 'char [2]'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(95,42): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(95,41): warning C4024: 'matrix_mul': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(95,45): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(95,44): warning C4024: 'matrix_mul': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(96,26): warning C4047: '==': 'char [2]'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(96,50): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(96,49): warning C4024: 'matrix_determinant': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(96,53): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(96,52): warning C4024: 'matrix_determinant': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(97,26): warning C4047: '==': 'char [2]'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(97,48): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(97,47): warning C4024: 'matrix_transpose': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(97,51): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(97,50): warning C4024: 'matrix_transpose': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(98,26): warning C4047: '==': 'char [2]'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(98,45): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(98,44): warning C4024: 'matrix_33to44': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(98,48): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(98,47): warning C4024: 'matrix_33to44': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(99,26): warning C4047: '==': 'char [2]'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(99,42): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(99,41): warning C4024: 'rand_input': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(99,45): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [2][2]'과(와) 다릅니다.
+C:\Users\user\source\repos\test_01\CG_test1.c(99,44): warning C4024: 'rand_input': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
