@@ -1,0 +1,10 @@
+This is computer graphics warming up program.
+1 2 3 4 5 6 7 8 9 10
+File input output sample program
+3D computer graphics
+2022 Fall semester
+Tech University Korea
+Game and multimedia engineering department
+1001 ada_ada 1001
+Monday Tuesday Wednesday Thursday Friday
+abcdefghidcba
