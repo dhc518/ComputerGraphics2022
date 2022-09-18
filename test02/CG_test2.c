@@ -33,7 +33,7 @@ int main() {
     printf("%s", buffer);
 
     wc = count_word(buffer);
-    printf("단어의 개수 : %d \n\n", wc);
+    printf("\n단어의 개수 : %d \n\n", wc);
 	nc = count_numbner(buffer);
 	printf("숫자의 개수 : %d \n\n", nc);
 	uc = count_upper(buffer);
