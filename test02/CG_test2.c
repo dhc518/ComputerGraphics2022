@@ -1,8 +1,12 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#define MAX 1000
+﻿#define MAX 1000 //특정 문제를 조건부로 컴파일하기 위해 번호 수정 후 컴파일
+#define _CRT_SECURE_NO_WARNINGS //표준 C의 secure 문제 무시하도록 설정
+
 #include <stdio.h>
-#include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 /*
 문자와 숫자가 10줄 저장된 파일을 만든다. (파일 이름: data.txt)
 • 데이터 파일 이름을 입력 받고, 파일에서 데이터를 읽어 문자열에 저장한다.
@@ -20,7 +24,7 @@ Game Monday Tuesday Wednesday Thursday Friday)
 
 int main() {
     
-    int wc, nc, CWC;
+    int wc, nc, uc;
 
     FILE* fp = fopen("data.txt", "r");  //test파일을 r(읽기) 모드로 열기
     char buffer[MAX] = {0, };
@@ -28,12 +32,69 @@ int main() {
     fread(buffer, 1,MAX, fp); //전체 읽기
     printf("%s", buffer);
 
-
-    printf("word count: %d\n", wc);
-    printf("word count: %d\n", nc);
-    printf("word count: %d\n", CWC);
+    wc = count_word(buffer);
+    printf("단어의 개수 : %d \n\n", wc);
+	nc = count_numbner(buffer);
+	printf("숫자의 개수 : %d \n\n", nc);
+	uc = count_upper(buffer);
+	printf("대문자의 개수 : %d \n\n", uc);
 
     fclose(fp);
 
 	return 0;
+}
+
+int count_word(char* s)
+{
+	int i, wc = 0, waiting = 1;
+
+	for (i = 0; s[i] != NULL; ++i)
+		if (isalpha(s[i]))
+		{
+			if (waiting)
+			{
+				wc++;
+				waiting = 0;
+			}
+
+		}
+		else
+			waiting = 1;
+	return wc;
+}
+int count_numbner(char* s)
+{
+	int i, nc = 0, waiting = 1;
+
+	for (i = 0; s[i] != NULL; ++i)
+		if (isdigit(s[i]))
+		{
+			if (waiting)
+			{
+				nc++;
+				waiting = 0;
+			}
+
+		}
+		else
+			waiting = 1;
+	return nc;
+}
+int count_upper(char* s)
+{
+	int i, uc = 0, waiting = 1;
+
+	for (i = 0; s[i] != NULL; ++i)
+		if (isupper(s[i]))
+		{
+			if (waiting)
+			{
+				uc++;
+				waiting = 0;
+			}
+
+		}
+		else
+			waiting = 1;
+	return uc;
 }
