@@ -1,1 +1,2 @@
 E:\github\ComputerGraphics2022\test01\test_01\x64\Debug\test_01.exe
+C:\Users\user\source\repos\test01\test_01\x64\Debug\test_01.exe

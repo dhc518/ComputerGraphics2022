@@ -7,4 +7,4 @@ Tech University Korea
 Game and multimedia engineering department
 1001 ada_ada 1001
 Monday Tuesday Wednesday Thursday Friday
-abcdefghidcba
+abcd 000 dcba

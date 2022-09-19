@@ -1,8 +1,8 @@
-﻿  CG_test1.c
-E:\github\ComputerGraphics2022\test01\test_01\CG_test1.c(11,12): warning C4244: '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\ComputerGraphics2022\test01\test_01\CG_test1.c(41,1): warning C4566: 유니버설 문자 이름 '\uF0E8'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-E:\github\ComputerGraphics2022\test01\test_01\CG_test1.c(151,45): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [3][3]'과(와) 다릅니다.
-E:\github\ComputerGraphics2022\test01\test_01\CG_test1.c(151,44): warning C4024: 'matrix_33to44': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
-E:\github\ComputerGraphics2022\test01\test_01\CG_test1.c(151,48): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [3][3]'과(와) 다릅니다.
-E:\github\ComputerGraphics2022\test01\test_01\CG_test1.c(151,47): warning C4024: 'matrix_33to44': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
-  test_01.vcxproj -> E:\github\ComputerGraphics2022\test01\test_01\x64\Debug\test_01.exe
+﻿  1번.c
+C:\Users\user\source\repos\test01\test_01\1번.c(11,8): warning C4244: '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\user\source\repos\test01\test_01\1번.c(41,1): warning C4566: 유니버설 문자 이름 '\uF0E8'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
+C:\Users\user\source\repos\test01\test_01\1번.c(159,45): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [3][3]'과(와) 다릅니다.
+C:\Users\user\source\repos\test01\test_01\1번.c(159,44): warning C4024: 'matrix_33to44': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\user\source\repos\test01\test_01\1번.c(159,48): warning C4047: '함수': 'int'의 간접 참조 수준이 'int [3][3]'과(와) 다릅니다.
+C:\Users\user\source\repos\test01\test_01\1번.c(159,47): warning C4024: 'matrix_33to44': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+  test_01.vcxproj -> C:\Users\user\source\repos\test01\test_01\x64\Debug\test_01.exe

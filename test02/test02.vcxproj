@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CG_test2.c" />
+    <ClCompile Include="2번.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt" />

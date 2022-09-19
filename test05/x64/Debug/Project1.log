@@ -1,0 +1,7 @@
+﻿  5번.cpp
+C:\Users\user\source\repos\test05\5번.cpp(212,27): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\user\source\repos\test05\5번.cpp(237,27): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\user\source\repos\test05\5번.cpp(273,29): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\user\source\repos\test05\5번.cpp(148,62): warning C4390: ';': 제어된 빈 문이 있습니다. 이 문이 필요합니까?
+C:\Users\user\source\repos\test05\5번.cpp(168,61): warning C4390: ';': 제어된 빈 문이 있습니다. 이 문이 필요합니까?
+  Project1.vcxproj -> C:\Users\user\source\repos\test05\x64\Debug\Project1.exe
