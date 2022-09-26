@@ -88,14 +88,14 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 void Mouse(int button, int state, int x, int y)
 {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-        if (600 >= x && x >= 200 && 450 >= y && y >= 150) {
+        if (600 + 400 * (rect1.size - 0.5) >= x && x >= 200 - 400 * (rect1.size - 0.5) && 450 + 300 * (rect1.size - 0.5) >= y && y >= 150 - 300 * (rect1.size - 0.5)) {
             rect1.r = (rand() % 101) / 100.0, rect1.g = (rand() % 100) / 100.0, rect1.b = (rand() % 100) / 100.0;
         }
         else {
             r = (rand() % 101) / 100.0, g = (rand() % 100) / 100.0, b = (rand() % 100) / 100.0;
         }
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-        if (600 >= x && x >= 200 && 450 >= y && y >= 150) {
+        if (600+400*(rect1.size-0.5)>= x && x >= 200- 400 * (rect1.size - 0.5) && 450+ 300 * (rect1.size - 0.5) >= y && y >= 150- 300 * (rect1.size - 0.5)) {
             rect1.size = rect1.size + 0.1;
         }
         else {
