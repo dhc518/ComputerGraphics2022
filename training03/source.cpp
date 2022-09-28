@@ -30,7 +30,9 @@ struct rect {
 };
 
 GLfloat r = 1.0, g = 1.0, b = 1.0;
-int rect_num;//사각형 개수
+int rect_num;//사각형 숫자
+int select_rect//선택된 사각형
+
 rect moving_rect[5];//움직이는 사각형 구조체 선언
 //사각형 램덤 색상 r = (rand()%101)/100.0, g = (rand() % 100) / 100.0, b = (rand() % 100) / 100.0;
 
@@ -101,27 +103,24 @@ void Create_rect() {
 
 void Mouse(int button, int state, int x, int y)
 {
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-        if (600 + 400 * (moving_rect[0].size - 0.5) >= x && x >= 200 - 400 * (moving_rect[0].size - 0.5) && 450 + 300 * (moving_rect[0].size - 0.5) >= y && y >= 150 - 300 * (moving_rect[0].size - 0.5)) {
-            moving_rect[0].r = (rand() % 101) / 100.0, moving_rect[0].g = (rand() % 100) / 100.0, moving_rect[0].b = (rand() % 100) / 100.0;
-        }
-        else {
-            r = (rand() % 101) / 100.0, g = (rand() % 100) / 100.0, b = (rand() % 100) / 100.0;
-        }
-    if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-        if (600+400*(moving_rect[0].size-0.5)>= x && x >= 200- 400 * (moving_rect[0].size - 0.5) && 450+ 300 * (moving_rect[0].size - 0.5) >= y && y >= 150- 300 * (moving_rect[0].size - 0.5)) {
-            moving_rect[0].size = moving_rect[0].size + 0.1;
-        }
-        else {
-            moving_rect[0].size = moving_rect[0].size - 0.1;
-        }
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {        
+        left_button = true;
+    }
+
     glutPostRedisplay();
 }
 
 void Motion(int x, int y) {
-
+    if (left_button == true) {
+       
+    }
 
     glutPostRedisplay();
+}
+
+void Find_rectangle(int x, int y) {
+    
+
 }
 
 
