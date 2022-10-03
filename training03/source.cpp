@@ -23,23 +23,27 @@ GLvoid Reshape(int w, int h);
 GLvoid Keyboard(unsigned char key, int x, int y);
 void Mouse(int button, int state, int x, int y);
 void Motion(int x, int y);
+void Create_rect();
+GLfloat Change_x(GLfloat x);
+GLfloat Change_y(GLfloat y);
 
 struct rect {
-    GLfloat size;
+    GLfloat x1, x2, y1,y2;
     GLfloat r, g, b;
 };
 
 GLfloat r = 1.0, g = 1.0, b = 1.0;
-int rect_num;//사각형 숫자
-int select_rect//선택된 사각형
-
+int rect_num;//사각형 넘버
+int rect_count=1;//사각형 갯수
 rect moving_rect[5];//움직이는 사각형 구조체 선언
 //사각형 램덤 색상 r = (rand()%101)/100.0, g = (rand() % 100) / 100.0, b = (rand() % 100) / 100.0;
+
+GLfloat past_mouse_x, past_mouse_y;
 
 
 void main(int argc, char** argv)
 {
-    moving_rect[0].size = 0.9;
+    moving_rect[0].x1 = 0.1, moving_rect[0].x2 = 0.1, moving_rect[0].y1 = 0.1, moving_rect[0].y1 = 0.1;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);
@@ -66,12 +70,10 @@ GLvoid drawScene() //--- 콜백 함수: 그리기 콜백 함수
     glClearColor(r, g, b, 1.0f); // 바탕색 지정
     glClear(GL_COLOR_BUFFER_BIT); // 설정된 색으로 전체를 칠하기
     // 그리기 부분 구현: 그리기 관련 부분이 여기에 포함된다.
-    for (rect_num = 0; rect_num < 5; rect_num++) {
+    for (rect_num = 0; rect_num < rect_count; rect_num++) {
         glColor3f(moving_rect[rect_num].r, moving_rect[rect_num].g, moving_rect[rect_num].b);
-        if(moving_rect[rect_num].size != NULL)
-        glRectf(-1 * moving_rect[rect_num].size, -1 * moving_rect[rect_num].size, moving_rect[rect_num].size, moving_rect[rect_num].size);
-    }
-    
+        glRectf(-1 * moving_rect[rect_num].x1, moving_rect[rect_num].x2, moving_rect[rect_num].y1, moving_rect[rect_num].y2);
+    }    
 
 
     glutSwapBuffers(); // 화면에 출력하기
@@ -88,7 +90,7 @@ GLvoid Keyboard(unsigned char key, int x, int y)
     switch (key) {
    
     case 'a':
-        //Create_rect();
+        Create_rect();
         break;//랜덤값
     case 'q':
         exit(0);
@@ -98,29 +100,53 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 }
 
 void Create_rect() {
-
+    if (rect_count < 5) {
+        moving_rect[rect_count].x1 = 0.1, moving_rect[rect_count].x2 = 0.1, moving_rect[rect_count].y1 = 0.1, moving_rect[rect_count].y1 = 0.1;
+        moving_rect[rect_count].r = (rand() % 101) / 100.0, moving_rect[rect_count].g = (rand() % 100) / 100.0, moving_rect[rect_count].b = (rand() % 100) / 100.0;
+        rect_count++;
+    }
 }
 
 void Mouse(int button, int state, int x, int y)
 {
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {        
-        left_button = true;
-    }
-
+    GLfloat X, Y;
+    X = Change_x(x);
+    Y = Change_y(y);
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        for (rect_num = rect_count; rect_num > 0; rect_num--) {
+            if (X < moving_rect[rect_num].x1 && X > moving_rect[rect_num].x2 && Y < moving_rect[rect_num].y1 && Y > moving_rect[rect_num].y2)
+                break;
+        }
+    } 
+    
     glutPostRedisplay();
 }
 
 void Motion(int x, int y) {
-    if (left_button == true) {
-       
-    }
+
+    x = Change_x(x);
+    y = Change_y(y);    
+
+    moving_rect[rect_num].x1 = moving_rect[rect_num].x1 - (x - past_mouse_x);
+    moving_rect[rect_num].x2 = moving_rect[rect_num].x2 - (x - past_mouse_x);
+    moving_rect[rect_num].y1 = moving_rect[rect_num].y1 - (y - past_mouse_y);
+    moving_rect[rect_num].y2 = moving_rect[rect_num].y2 - (y - past_mouse_y);
 
     glutPostRedisplay();
 }
 
-void Find_rectangle(int x, int y) {
-    
+GLfloat Change_x(GLfloat x) {
+    GLfloat changed;
+    changed = x / 800 - 0.5;
 
+    return changed;
+}
+
+GLfloat Change_y(GLfloat y) {
+    GLfloat changed;
+    changed = y / 600 - 0.5;
+
+    return changed;
 }
 
 
