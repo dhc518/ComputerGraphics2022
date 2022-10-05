@@ -1,4 +1,5 @@
-#define Pro 8
+#define Pro 6
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <gl/glew.h> //--- 필요한 헤더파일 include
 #include<gl/freeglut.h>
@@ -36,6 +37,7 @@ GLfloat colors[4][3] = {};
 
 //함수
 GLvoid drawScene(GLvoid);
+int leftmouse_count = 0;//새로그린 도형 제일 위로 올리기 위한 마우스 카운터
 GLvoid Reshape(int w, int h);
 
 void make_vertexShaders();
@@ -97,9 +99,12 @@ GLvoid drawScene()//--- 콜백 함수: 그리기 콜백 함수 { glClearColor( 0.0f, 0.0f, 
 	glEnableVertexAttribArray(0);
 
 	//--- 삼각형 그리기
-	for (int i = 0; i < 4; i++) {
-		glUniform3f(vColorLocation, colors[i][0], colors[i][1], colors[i][2]);
-		glDrawArrays(GL_TRIANGLES, i * 3, 3);
+	int i = 0;
+	while (i < 4) {
+		int triangle_num = (leftmouse_count % 4 + i) % 4;//최근 삼각형 위로 불러오기
+		glUniform3f(vColorLocation, colors[triangle_num][0], colors[triangle_num][1], colors[triangle_num][2]);
+		glDrawArrays(GL_TRIANGLES, triangle_num * 3, 3);
+		i++;
 	}
 
 	glutSwapBuffers(); //--- 화면에 출력하기
@@ -228,6 +233,7 @@ void Mouse(int button, int state, int x, int y)
 	GLfloat real_y = (GLfloat)-(y - (HEIGHT / 2)) / (HEIGHT / 2);
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		leftmouse_count++;//왼쪽 마우스 클릭 카운터
 		interval_x += size_x;
 		interval_y += size_y;
 		triShape[tri_select][0][0] = real_x + interval_x ; triShape[tri_select][0][1] = real_y - interval_y;   //오른쪽 점
