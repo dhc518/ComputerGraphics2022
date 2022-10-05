@@ -1,4 +1,4 @@
-#define Pro 5
+#define Training 5
 #include <iostream>
 #include <gl/glew.h> //--- ÇÊ¿äÇÑ Çì´õÆÄÀÏ include
 #include <gl/freeglut.h>
@@ -9,7 +9,7 @@
 #define WIDHT 800
 #define HEIGHT 600
 
-#if Pro == 3
+#if Training == 3
 
 //±¸Á¶Ã¼
 
@@ -69,7 +69,7 @@ void main(int argc, char** argv) { //--- À©µµ¿ì Ãâ·ÂÇÏ°í ÄÝ¹éÇÔ¼ö ¼³Á¤ { //--- À
 GLvoid drawScene()//--- ÄÝ¹é ÇÔ¼ö: ±×¸®±â ÄÝ¹é ÇÔ¼ö { glClearColor( 0.0f, 0.0f, 1.0f, 1.0f ); // ¹ÙÅÁ»öÀ» ¡®blue¡¯ ·Î ÁöÁ¤
 {
 	// ±×¸®±â ºÎºÐ ±¸Çö: ±×¸®±â °ü·Ã ºÎºÐÀÌ ¿©±â¿¡ Æ÷ÇÔµÈ´Ù.
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	for (int i = 0; i <= shapecount; i++) {
@@ -99,6 +99,8 @@ void Keyboard(unsigned char key, int x, int y)
 		else
 			std::cout << "»ç°¢Çü °³¼ö ÃÊ°ú" << std::endl;
 		break;
+	case 'q':
+		exit(0);
 	}
 	glutPostRedisplay();
 }
@@ -113,7 +115,7 @@ void Mouse(int button, int state, int x, int y)
 			if (Rectan[i].first_x < real_x && Rectan[i].first_y < real_y && Rectan[i].second_x > real_x && Rectan[i].second_y > real_y) {
 				mouse_button = true;
 				select_rect = i;
-				std::cout << "¼±ÅÃµÈ »ç°¢Çü : " << select_rect << std::endl;
+				//std::cout << "¼±ÅÃµÈ »ç°¢Çü : " << select_rect << std::endl;
 				break;
 			}
 		}
@@ -136,7 +138,7 @@ void Motion(int x, int y)
 		Rectan[select_rect].first_y = real_y - 0.2f;
 		Rectan[select_rect].second_x = real_x + 0.2f;
 		Rectan[select_rect].second_y = real_y + 0.2f;
-		std::cout << Rectan[select_rect].first_x << " " << Rectan[select_rect].first_y << " " << Rectan[select_rect].second_x << std::endl;
+		//std::cout << Rectan[select_rect].first_x << " " << Rectan[select_rect].first_y << " " << Rectan[select_rect].second_x << std::endl;
 	}
 	glutPostRedisplay();
 }
@@ -148,14 +150,15 @@ void make_rect()
 		Rectan[shapecount].first_y = -0.2f;
 		Rectan[shapecount].second_x = 0.2f;
 		Rectan[shapecount].second_y = 0.2f;
-		std::cout << "»ç°¢Çü »ý¼º" << std::endl;
+		//std::cout << "»ç°¢Çü »ý¼º" << std::endl;
 }
 
-#elif Pro == 4
+#elif Training == 4
 
 typedef struct RECTAN {
 	GLfloat first_x, first_y, second_x, second_y;
 	GLfloat r, g, b;
+	int zigzag_count;
 };
 
 RECTAN Rectan[6];
@@ -185,7 +188,7 @@ unsigned char presskey; //sÁ¤Áö
 bool onetime = true;
 
 GLfloat r = dis(gen), g = dis(gen), b = dis(gen);
-GLfloat back_r = 0.4f, back_g = 0.4f, back_b = 0.4f;
+GLfloat back_r = 1.0f, back_g = 1.0f, back_b = 1.0f;
 
 void main(int argc, char** argv) { //--- À©µµ¿ì Ãâ·ÂÇÏ°í ÄÝ¹éÇÔ¼ö ¼³Á¤ { //--- À©µµ¿ì »ý¼ºÇÏ±â
 	glutInit(&argc, argv); // glut ÃÊ±âÈ­
@@ -198,12 +201,12 @@ void main(int argc, char** argv) { //--- À©µµ¿ì Ãâ·ÂÇÏ°í ÄÝ¹éÇÔ¼ö ¼³Á¤ { //--- À
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) // glew ÃÊ±âÈ­
 	{
-		std::cerr << "Unable to initialize GLEW" << std::endl;
+		//std::cerr << "Unable to initialize GLEW" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
 	else
-		std::cout << "GLEW Initialized\n";
+		//std::cout << "GLEW Initialized\n";
 
 	for (int i = 0; i < 5; i++) {
 		move_x[i] = 0.005f;
@@ -211,7 +214,7 @@ void main(int argc, char** argv) { //--- À©µµ¿ì Ãâ·ÂÇÏ°í ÄÝ¹éÇÔ¼ö ¼³Á¤ { //--- À
 		size_x[i] = 0.003f;
 		size_y[i] = 0.003f;
 		zigzag[i] = 0.2f;
-		std::cout << move_x[i] << " " << move_y[i] << std::endl;
+		//std::cout << move_x[i] << " " << move_y[i] << std::endl;
 	}
 
 	glutDisplayFunc(drawScene); // Ãâ·Â ÇÔ¼öÀÇ ÁöÁ¤
@@ -389,7 +392,7 @@ void TimerFunction(int value)
 	}
 }
 
-#elif Pro == 5
+#elif Training == 5
 #include <cmath>
 //±¸Á¶Ã¼
 
@@ -409,9 +412,11 @@ std::uniform_real_distribution<GLfloat> dis(-0.9, 0.9);
 //ÇÔ¼ö
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
-
+GLvoid Keyboard(unsigned char key, int x, int y);
 void Mouse(int button, int state, int x, int y);
 void Motion(int x, int y);
+void Recreate();
+
 
 //º¯¼ö
 int shapecount = 29;
@@ -450,6 +455,7 @@ void main(int argc, char** argv) { //--- À©µµ¿ì Ãâ·ÂÇÏ°í ÄÝ¹éÇÔ¼ö ¼³Á¤ { //--- À
 
 	glutDisplayFunc(drawScene); // Ãâ·Â ÇÔ¼öÀÇ ÁöÁ¤
 	glutReshapeFunc(Reshape); // ´Ù½Ã ±×¸®±â ÇÔ¼ö ÁöÁ¤
+	glutKeyboardFunc(Keyboard);
 	glutMouseFunc(Mouse);
 	glutMotionFunc(Motion);
 	glutMainLoop(); // ÀÌº¥Æ® Ã³¸® ½ÃÀÛ }
@@ -518,6 +524,32 @@ void Motion(int x, int y)
 			}
 		}
 	}
+	glutPostRedisplay();
+}
+void Recreate() {
+	for (int i = 1; i <= shapecount; i++) {
+		r = abs(dis(gen));
+		g = abs(dis(gen));
+		b = abs(dis(gen));
+
+		bg_rect[i].r = r; bg_rect[i].g = g; bg_rect[i].b = b;
+		bg_rect[i].first_x = dis(gen);
+		bg_rect[i].first_y = dis(gen);
+		bg_rect[i].second_x = bg_rect[i].first_x + 0.1f; bg_rect[i].second_y = bg_rect[i].first_y + 0.1f;
+
+	}
+	glutPostRedisplay();
+}
+
+GLvoid Keyboard(unsigned char key, int x, int y) {
+	switch (key) {
+	case 'r':
+		Recreate();
+		break;
+	case 'q':
+		exit(0);
+	}
+
 	glutPostRedisplay();
 }
 
