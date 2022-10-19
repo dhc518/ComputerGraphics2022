@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <gl/glew.h> //--- 필요한 헤더파일 include
 #include<gl/freeglut.h>
@@ -7,12 +8,12 @@
 #include <windows.h>
 #include <stdio.h>
 #include <string.h>
-//#include <gl/glm/glm.hpp>
-//#include <gl/glm/ext.hpp>
-//#include <gl/glm/gtc/matrix_transform.hpp>
-#include <glm/glm/glm.hpp>
-#include <glm/glm/ext.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
+#include <gl/glm/glm.hpp>
+#include <gl/glm/ext.hpp>
+#include <gl/glm/gtc/matrix_transform.hpp>
+//#include <glm/glm/glm.hpp>
+//#include <glm/glm/ext.hpp>
+//#include <glm/glm/gtc/matrix_transform.hpp>
 
 using namespace glm;
 using namespace std;
@@ -128,7 +129,7 @@ GLvoid drawScene()//--- 콜백 함수: 그리기 콜백 함수 { glClearColor( 0.0f, 0.0f, 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(1.0, 0.0, 0.0));
 	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0, 1.0, 0.0));
-	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0, 0.0, 1.0));
+	//model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0, 0.0, 1.0));
 	
 	unsigned int modelLocation = glGetUniformLocation(s_program, "modelTransform");
 	//--- modelTransform 변수에 변환 값 적용하기
@@ -140,7 +141,7 @@ GLvoid drawScene()//--- 콜백 함수: 그리기 콜백 함수 { glClearColor( 0.0f, 0.0f, 
 
 		for (int i = 0; i < face_number; i++)
 		{
-			glUniform3f(vColorLocation, 0, 1.f, 0);
+			glUniform3f(vColorLocation, 0, 0, 1.0f);
 
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (GLvoid*)(sizeof(GLuint) * (i + face_select) * 6));
 
@@ -153,7 +154,7 @@ GLvoid drawScene()//--- 콜백 함수: 그리기 콜백 함수 { glClearColor( 0.0f, 0.0f, 
 
 		for (int i = 1; i > (face_select / 4) * -1; i--)
 		{
-			glUniform3f(vColorLocation, 0, 1.f, 0);
+			glUniform3f(vColorLocation, 0, 0, 1.0f);
 
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (GLvoid*)(sizeof(GLuint) * (face_select % 4)  * i));
 
