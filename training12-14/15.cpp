@@ -21,6 +21,8 @@ using namespace std;
 #define WIDTH 800
 #define HEIGHT 600
 
+#define PI 3.141592
+
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_real_distribution<GLfloat> dis(0, 1);
@@ -36,9 +38,17 @@ typedef struct READ {
 	FACE* face;
 };
 
+typedef struct CYCLONE {
+	float point[300][3];
+	float radius;
+	float origin[2], theta;
+	int point_count;
+	float radian;
+};
+
 //변수
 GLchar* vertexsource[2], * fragmentsource[2];
-GLuint vertexshader[2], fragmentshader[2], vao[2], vbo[2], ebo[1];
+GLuint vertexshader[2], fragmentshader[2], vao[3], vbo[3], ebo[1];
 GLuint s_program, s_program_plat, shaderID;
 GLfloat rColor = 1.f, bColor = 1.f, gColor = 1.f;
 GLint result;
@@ -51,25 +61,41 @@ GLfloat middle_line[6][3] = {};
 READ cube;
 READ tetra;
 
-bool c_select = true;
+CYCLONE cyclone;
 
-float x_rotation1 = 0;
-float y_rotation1 = 0;
-float x_rotation2 = 0;
-float y_rotation2 = 0;
-float y_rotation3 = 0;
+bool isOrigin = true;
+
+int a = 0;
+bool plus_a = true;
+
+int s_count = 0;
+bool plus_s = true;
+
+bool isR_on = false;
+bool isT_on = false;
+bool isS_on = false;
+
+float x_trans = 0;
+float y_trans = 0;
+
+float one_x = 0;
+float one_y = 0;
+float one_z = 0;
+float one_scale = 1;
+float one_zero_scale = 1;
 
 
-bool r_plus = false;
-bool r_minus = false;
-bool x_plus1 = false;
-bool y_plus1 = false;
-bool x_minus1 = false;
-bool y_minus1 = false;
-bool x_plus2 = false;
-bool y_plus2 = false;
-bool x_minus2 = false;
-bool y_minus2 = false;
+float two_x = 0;
+float two_y = 0;
+float two_z = 0;
+float two_scale = 1;
+float two_zero_scale = 1;
+
+
+
+mat4 TR_CYC2 = mat4(1.f);
+mat4 S_TR = mat4(1.f);
+
 
 //함수
 GLvoid drawScene(GLvoid);
@@ -84,8 +110,11 @@ void ReadObj(FILE* objFile, READ& Read);
 
 //그리기 함수
 void draw_middle_line();
+void draw_cyclone();
+void enter();
 
 void Keyboard(unsigned char key, int x, int y);
+void SpecialKeyboard(int key, int x, int y);
 void Timer(int value);
 
 
@@ -108,6 +137,8 @@ void main(int argc, char** argv) { //--- 윈도우 출력하고 콜백함수 설정 //--- 윈�
 		std::cout << "GLEW Initialized\n";
 
 	draw_middle_line();
+	enter();
+	draw_cyclone();
 
 	InitShader();
 	InitBuffer();
@@ -115,6 +146,7 @@ void main(int argc, char** argv) { //--- 윈도우 출력하고 콜백함수 설정 //--- 윈�
 	glutDisplayFunc(drawScene); // 출력 함수의 지정
 	glutReshapeFunc(Reshape); // 다시 그리기 함수 지정
 	glutKeyboardFunc(Keyboard);
+	glutSpecialFunc(SpecialKeyboard);
 	glutMainLoop(); // 이벤트 처리 시작 }
 }
 
@@ -145,6 +177,13 @@ GLvoid drawScene()//--- 콜백 함수: 그리기 콜백 함수 { glClearColor( 0.0f, 0.0f, 
 	glUniform3f(vColorLocation2, 0, 0, 0);
 	glDrawArrays(GL_LINES, 0, 6);
 
+	//회오리
+	glBindVertexArray(vao[2]);
+	glEnableVertexAttribArray(0);
+
+	cout << cyclone.point_count << endl;
+	glPointSize(5);
+	glDrawArrays(GL_LINE_STRIP, 0, cyclone.point_count - 18);
 
 	//도형 그리기
 	glEnable(GL_DEPTH_TEST);
@@ -153,80 +192,98 @@ GLvoid drawScene()//--- 콜백 함수: 그리기 콜백 함수 { glClearColor( 0.0f, 0.0f, 
 	int vColorLocation = glGetUniformLocation(s_program, "out_Color");
 
 	mat4 model = mat4(1.0f);  mat4 cube_model = mat4(1.f);
-	mat4 RT = mat4(1.f); mat4 RT1 = mat4(1.f); mat4 RT2 = mat4(1.f); mat4 RT3 = mat4(1.f); mat4 RT4 = mat4(1.f);
+	mat4 TR_CYC = mat4(1.f);  mat4 TR_CYC2 = mat4(1.f);
+	mat4 S_TR = mat4(1.f); mat4 S_TR2 = mat4(1.f);
 
+	model = scale(model, vec3(one_zero_scale, one_zero_scale, one_zero_scale));
 	model = rotate(model, radians(30.f), vec3(1.f, 0, 0));
 	model = rotate(model, radians(30.f), vec3(0, -1.f, 0));
 	model = translate(model, vec3(0.5f, 0, 0));
-	RT = rotate(RT, radians(x_rotation1), vec3(1.f, 0, 0));
-	RT1 = rotate(RT1, radians(y_rotation1), vec3(0, 1.f, 0));
-	RT2 = rotate(RT2, radians(30.f), vec3(1.f, 0, 0));
-	RT2 = rotate(RT2, radians(y_rotation3), vec3(0, 1.f, 0));
+	model = translate(model, vec3(x_trans, 0, y_trans));
+	model = translate(model, vec3(one_x, one_y, one_z));
+	model = scale(model, vec3(one_scale, one_scale, one_scale));
+
+
+	if (isR_on) {
+		model = translate(model, vec3(-0.5f, 0, 0));
+		TR_CYC = translate(TR_CYC, vec3(cyclone.point[a][0], 0, cyclone.point[a][2]));
+	}
+
+	if (isS_on || isT_on) {
+		if (plus_s) {
+			S_TR = translate(S_TR, vec3(s_count * -0.05f, 0, 0));
+			s_count++;
+		}
+		else if (!plus_s) {
+			S_TR = translate(S_TR, vec3(s_count * -0.05f, 0, y_trans / 10));
+			s_count--;
+		}
+	}
+
+	cout << s_count << endl;
+
 
 	unsigned int modelLocation = glGetUniformLocation(s_program, "modelTransform");
 	//--- modelTransform 변수에 변환 값 적용하기
 	//glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(RT2_1 * TR * RT * RT1 * model));
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(RT2 * model * RT * RT1));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model * TR_CYC * S_TR));
 
 
 	glUniform3f(vColorLocation, 0, 0, 0);
 
-	if (c_select) {
-		qobj = gluNewQuadric();
-		gluQuadricDrawStyle(qobj, GLU_LINE);// 도형 스타일
-		gluQuadricNormals(qobj, GLU_SMOOTH); //생략 가능
-		gluQuadricOrientation(qobj, GLU_OUTSIDE);// 생략 가능
-		gluSphere(qobj, 0.3, 50, 50);
-	}
+	qobj = gluNewQuadric();
+	gluQuadricDrawStyle(qobj, GLU_LINE);// 도형 스타일
+	gluQuadricNormals(qobj, GLU_SMOOTH); //생략 가능
+	gluQuadricOrientation(qobj, GLU_OUTSIDE);// 생략 가능
+	gluSphere(qobj, 0.1, 30, 30);
 
-	else if (!c_select) {
-		qobj = gluNewQuadric(); // 객체 생성하기
-		gluQuadricDrawStyle(qobj, GLU_LINE); // 도형 스타일
-		gluQuadricNormals(qobj, GLU_SMOOTH); // 생략 가능
-		gluQuadricOrientation(qobj, GLU_OUTSIDE); // 생략 가능
-		gluCylinder(qobj, 0.3, 0.0, 0.5, 20, 8);
-	}
 
-	
 	//큐브
+	cube_model = scale(cube_model, vec3(two_zero_scale, two_zero_scale, two_zero_scale));
 	cube_model = rotate(cube_model, radians(30.f), vec3(1.f, 0, 0));
 	cube_model = rotate(cube_model, radians(30.f), vec3(0, -1.f, 0));
 	cube_model = translate(cube_model, vec3(-0.5f, 0, 0));
-	RT3 = rotate(RT3, radians(x_rotation2), vec3(1.f, 0, 0));
-	RT4 = rotate(RT4, radians(y_rotation2), vec3(0, 1.f, 0));
+	cube_model = translate(cube_model, vec3(x_trans, 0, y_trans));
+	cube_model = translate(cube_model, vec3(two_x, two_y, two_z));
+	cube_model = scale(cube_model, vec3(two_scale, two_scale, two_scale));
 
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(RT2 * cube_model * RT3 * RT4));
+	if (isR_on) {
+		cube_model = translate(cube_model, vec3(0.5f, 0, 0));
+		TR_CYC2 = translate(TR_CYC2, vec3(cyclone.point[cyclone.point_count - 19 - a][0], 0, cyclone.point[cyclone.point_count - 19 - a][2]));
+	}
 
-
-	if (c_select) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-		glBindVertexArray(vao[1]);
-		glEnableVertexAttribArray(0);
-
-		for (int i = 0; i < 6; i++)
-		{
-
-			if (i == 0)
-				glUniform3f(vColorLocation, 1.f, 0, 0);
-
-			if (i == 2)
-				glUniform3f(vColorLocation, 0, 1.f, 0);
-
-			if (i == 4)
-				glUniform3f(vColorLocation, 0, 0, 1.f);
-
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (GLvoid*)(sizeof(GLuint) * i * 6));
-
+	if (isS_on || isT_on) {
+		if (plus_s) {
+			S_TR2 = translate(S_TR2, vec3(s_count * 0.05f, 0, 0));
+			s_count++;
+		} else if (!plus_s) {
+			S_TR2 = translate(S_TR2, vec3(s_count * 0.05f, 0, 0));
+			s_count--;
 		}
 	}
 
-	if (!c_select) {
-		qobj = gluNewQuadric(); // 객체 생성하기
-		gluQuadricDrawStyle(qobj, GLU_LINE); // 도형 스타일
-		gluQuadricNormals(qobj, GLU_SMOOTH); // 생략 가능
-		gluQuadricOrientation(qobj, GLU_OUTSIDE); // 생략 가능
-		gluCylinder(qobj, 0.3, 0.3, 0.5, 20, 8);
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(cube_model * TR_CYC2 * S_TR2));
+
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glBindVertexArray(vao[1]);
+	glEnableVertexAttribArray(0);
+
+	for (int i = 0; i < 6; i++)
+	{
+
+		if (i == 0)
+			glUniform3f(vColorLocation, 1.f, 0, 0);
+
+		if (i == 2)
+			glUniform3f(vColorLocation, 0, 1.f, 0);
+
+		if (i == 4)
+			glUniform3f(vColorLocation, 0, 0, 1.f);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (GLvoid*)(sizeof(GLuint) * i * 6));
+
 	}
 
 	glutSwapBuffers(); //--- 화면에 출력하기
@@ -296,8 +353,8 @@ void make_fragmentShader()
 
 void InitBuffer()
 {
-	glGenVertexArrays(2, vao); //--- VAO 를 지정하고 할당하기
-	glGenBuffers(2, vbo); //--- 2개의 VBO를 지정하고 할당하기
+	glGenVertexArrays(3, vao); //--- VAO 를 지정하고 할당하기
+	glGenBuffers(3, vbo); //--- 2개의 VBO를 지정하고 할당하기
 	glGenBuffers(1, ebo);
 
 	//--- attribute 인덱스 0번을 사용가능하게 함
@@ -306,6 +363,13 @@ void InitBuffer()
 
 	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), middle_line, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	//회오리
+	glBindVertexArray(vao[2]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+	glBufferData(GL_ARRAY_BUFFER, cyclone.point_count * 3 * sizeof(GLfloat), cyclone.point, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
 
 	//정육면체
 	FILE* fp;
@@ -320,7 +384,7 @@ void InitBuffer()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 12 * sizeof(FACE), cube.face, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-	glEnableVertexAttribArray(0);
+
 }
 
 void InitShader()
@@ -371,77 +435,84 @@ void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
+	case 'p':
+		x_trans = 0;
+		y_trans = 0;
+		glutPostRedisplay();
+		break;
 	case 'r':
-		r_plus = !r_plus;
+		isR_on = !isR_on;
 		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'R':
-		r_minus = !r_minus;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'a':
-		x_plus1 = !x_plus1;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'A':
-		x_minus1 = !x_minus1;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'b':
-		y_plus1 = !y_plus1;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'B':
-		y_minus1 = !y_minus1;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'q':
-		glutLeaveMainLoop();
-		break;
-
-	case 'x':
-		x_plus2 = !x_plus2;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'X':
-		x_minus2 = !x_minus2;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'y':
-		y_plus2 = !y_plus2;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'Y':
-		y_minus2 = !y_minus2;
-		glutTimerFunc(10, Timer, 1);
-		break;
-
-	case 'c':
-		c_select = !c_select;
 		break;
 
 	case 's':
-		c_select = true;
-		x_plus1 = false;
-		y_plus1 = false;
-		x_minus1 = false;
-		y_minus1 = false;
-		x_plus2 = false;
-		y_plus2 = false;
-		x_minus2 = false;
-		y_minus2 = false;
-		r_plus = false;
-		r_minus = false;
-		x_rotation1 = y_rotation1 = x_rotation2 = y_rotation2 = y_rotation3 = 0;
+		isT_on = !isT_on;
+		glutTimerFunc(100, Timer, 1);
+		break;
+
+	case 't':
+		isS_on = !isS_on;
+		glutTimerFunc(100, Timer, 1);
+		break;
+	case 'x':	
+		one_x += 0.01f;
+		break;
+
+	case 'y':	
+		one_y += 0.01f;
+		break;
+
+	case 'z':	
+		one_z += 0.01f;
+		break;
+
+	case 'X':
+		two_x += 0.01f;
+		break;
+
+	case 'Y':
+		two_y += 0.01f;
+		break;
+
+	case 'Z':
+		two_z += 0.01f;
+		break;
+
+	case 'm':
+		one_scale += 0.01f;
+		break;
+
+	case 'n':
+		one_scale -= 0.01f;
+		break;
+
+	case 'M':
+		two_scale += 0.01f;
+		break;
+
+	case 'N':
+		two_scale -= 0.01f;
+		break;
+
+	case 'k':
+		one_zero_scale += 0.01f;
+		break;
+
+	case 'j':
+		one_zero_scale -= 0.01f;
+		break;
+
+	case 'K':
+		two_zero_scale += 0.01f;
+		break;
+
+	case 'J':		
+		two_zero_scale += 0.01f;
+		break;
+
+
+	case 'q':
+		glutLeaveMainLoop();
 		break;
 	}
 
@@ -460,71 +531,127 @@ void Keyboard(unsigned char key, int x, int y)
 
 void Timer(int value)
 {
-	if (x_plus1) {
-		x_rotation1 += 1;
+	if (isR_on) {
+		if (plus_a) {
+			a++;
+			if (a == cyclone.point_count - 19)
+				plus_a = !plus_a;
+		}
+
+		else if (!plus_a) {
+			a--;
+			if (a == 0)
+				plus_a = !plus_a;
+		}
+			
+
 	}
 
-	if (y_plus1) {
-		y_rotation1 += 1;
+	if (isS_on) {
+		if (plus_s) {
+			if (s_count == 10) {
+				plus_s = !plus_s;
+			}
+		}
+
+		else if (!plus_s) {
+			if (s_count == 0) {
+				plus_s = !plus_s;
+			}
+		}
 	}
 
-	if (x_minus1) {
-		x_rotation1 -= 1;
+	if (isT_on) {
+		if (plus_s) {
+			if (s_count == 20) {
+				plus_s = !plus_s;
+			}
+		}
+
+		else if (!plus_s) {
+			if (s_count == 0) {
+				plus_s = !plus_s;
+			}
+		}
 	}
 
-	if (y_minus1) {
-		y_rotation1 -= 1;
-	}
-
-	if (x_plus2) {
-		x_rotation2 += 1;
-	}
-
-	if (y_plus2) {
-		y_rotation2 += 1;
-	}
-
-	if (x_minus2) {
-		x_rotation2 -= 1;
-	}
-
-	if (y_minus2) {
-		y_rotation2 -= 1;
-	}
-
-	if (r_plus)
-		y_rotation3 += 1;
-
-	if (r_minus)
-		y_rotation3 -= 1;
-
-	if (!x_plus1 && !x_minus1 && !y_plus1 && !y_minus1 && !x_plus2 && !x_minus2 && !y_plus2 && !y_minus2 && !r_minus && !r_plus)
+	if (!isR_on && !isT_on && !isS_on) {
+		a = 0;
+		plus_a = true;
+		plus_s = true;
+		s_count = 0;
 		return;
+	}
 
-	glBindVertexArray(vao[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(vec3), cube.vertex, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+	glutTimerFunc(30, Timer, 1);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 12 * sizeof(FACE), cube.face, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-	glEnableVertexAttribArray(0);
+	glutPostRedisplay();
+}
 
-	glutTimerFunc(10, Timer, 1);
+void SpecialKeyboard(int key, int x, int y)
+{
+	if (key == GLUT_KEY_DOWN) {
+		y_trans += 0.01f;
+	}
 
+	else if (key == GLUT_KEY_UP) {
+		y_trans -= 0.01f;
+	}
+
+	else if (key == GLUT_KEY_LEFT) {
+		x_trans -= 0.01f;
+	}
+
+	else if (key == GLUT_KEY_RIGHT) {
+		x_trans += 0.01f;
+	}
 	glutPostRedisplay();
 }
 
 void draw_middle_line()
 {
-
 	middle_line[0][0] = 1.f;  middle_line[0][1] = 0;  middle_line[0][2] = 0;
 	middle_line[1][0] = -1.f;  middle_line[1][1] = 0;  middle_line[1][2] = 0;
 	middle_line[2][0] = 0;  middle_line[2][1] = 1.f;  middle_line[2][2] = 0;
 	middle_line[3][0] = 0;  middle_line[3][1] = -1.f;  middle_line[3][2] = 0;
 	middle_line[4][0] = 0;  middle_line[4][1] = 0;  middle_line[4][2] = 1.f;
 	middle_line[5][0] = 0;  middle_line[5][1] = 0;  middle_line[5][2] = -1.f;
+}
+
+void enter()
+{
+	cyclone.origin[0] = 0;
+	cyclone.origin[1] = 0;
+	cyclone.theta = 0;
+	cyclone.radius = 0.1f;
+	cyclone.radian = 0;
+	cyclone.point_count = 18;
+}
+
+void draw_cyclone() {
+	int temp = 0;
+	int i = 0;
+	for (int j = 0; j < 6; j++) {
+		//cyclone.radian = 0;
+		for (int i = temp; i < cyclone.point_count; i++) {
+			cyclone.point[i][0] = cyclone.origin[0] + cyclone.radius * cos(radians(cyclone.radian)); cyclone.point[i][1] = 0;
+			cyclone.point[i][2] = cyclone.radius * sin(radians(cyclone.radian));
+			cyclone.radian += 180 /(cyclone.point_count - temp);
+			//cyclone.radian %= 360;
+			//cyclone.theta = PI * cyclone.radian / 180;
+		}
+		temp = cyclone.point_count;
+		cyclone.point_count += 18;
+		cyclone.radius += 0.1f;
+
+		isOrigin = !isOrigin;
+		if (isOrigin) {
+			cyclone.origin[0] = 0;
+		}
+		else if (!isOrigin) {
+			cyclone.origin[0] = 0.1f;
+		}
+	}
 
 }
 
@@ -555,7 +682,8 @@ void ReadObj(FILE* objFile, READ& Read)
 				&Read.vertex[vertIndex].x, &Read.vertex[vertIndex].y,
 				&Read.vertex[vertIndex].z);
 			vertIndex++;
-		} else if (count[0] == 'f' && count[1] == '\0') {
+		}
+		else if (count[0] == 'f' && count[1] == '\0') {
 			fscanf(objFile, "%d %d %d",
 				&Read.face[faceIndex].a, &Read.face[faceIndex].b, &Read.face[faceIndex].c);
 			Read.face[faceIndex].a--; Read.face[faceIndex].b--; Read.face[faceIndex].c--;

@@ -6,5 +6,5 @@ uniform mat4 modelTransform; //--- 모델링 변환 행렬: uniform 변수로 �
 
 void main()
 {
-gl_Position = modelTransform * vec4(vPos, 1.0); //--- 좌표값에 modelTransform 변환을 적용한다.
+	gl_Position = modelTransform * vec4(vPos, 1.0); //--- 좌표값에 modelTransform 변환을 적용한다.
 }
