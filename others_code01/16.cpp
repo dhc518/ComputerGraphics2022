@@ -555,7 +555,7 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 		else
 		{
 			Y_rotating = false;
-			y_radian = 0;
+			//y_radian = 0;
 		}
 		break;
 	case 't':
